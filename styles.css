@@ -63,9 +63,8 @@
 
 .de-seg-btns {
   display: flex;
-  border: 1px solid var(--background-modifier-border);
-  border-radius: 5px;
-  overflow: hidden;
+  align-items: center;
+  gap: 4px;
 }
 
 .de-seg-btn {
@@ -73,27 +72,25 @@
   font-size: 0.8rem;
   font-weight: 500;
   background: transparent;
-  border: none;
-  border-right: 1px solid var(--background-modifier-border);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
   color: var(--text-muted);
   cursor: pointer;
-  transition: background 0.12s, color 0.12s;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
   white-space: nowrap;
   line-height: 1.6;
-}
-
-.de-seg-btn:last-child {
-  border-right: none;
 }
 
 .de-seg-btn:hover:not(.is-active) {
   background: var(--background-modifier-hover);
   color: var(--text-normal);
+  border-color: var(--text-muted);
 }
 
 .de-seg-btn.is-active {
   background: var(--interactive-accent);
   color: var(--text-on-accent);
+  border-color: var(--interactive-accent);
 }
 
 /* ═══ Chunk list ═════════════════════════════════════════════════════ */
