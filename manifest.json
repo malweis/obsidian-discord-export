@@ -1,8 +1,8 @@
 {
   "id": "discord-export",
   "name": "Discord Export",
-  "version": "1.0.0",
-  "minAppVersion": "1.0.0",
+  "version": "1.0.1",
+  "minAppVersion": "1.12.7",
   "description": "Prepares your note for posting on Discord: adds paragraph indentation, strips frontmatter and tags, and splits into 2000/4000 character chunks with copy buttons.",
   "author": "malweis",
   "authorUrl": "https://github.com/malweis",
