@@ -1,0 +1,265 @@
+/* ═══ Modal shell ════════════════════════════════════════════════════ */
+.de-modal {
+  width: min(860px, 92vw) !important;
+  max-width: min(860px, 92vw) !important;
+}
+
+.de-modal .modal-content {
+  padding: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  /* Let the content drive height, but cap it so the modal doesn't overflow the screen */
+  max-height: 82vh;
+}
+
+.de-content {
+  display: flex;
+  flex-direction: column;
+  /* Must have a concrete height for flex children to overflow-scroll */
+  min-height: 0;
+  max-height: 82vh;
+}
+
+/* ═══ Header ════════════════════════════════════════════════════════ */
+.de-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid var(--background-modifier-border);
+  flex-shrink: 0;
+}
+
+.de-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-normal);
+}
+
+.de-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ═══ Segmented controls ════════════════════════════════════════════ */
+.de-seg-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.de-seg-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.de-seg-btns {
+  display: flex;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.de-seg-btn {
+  padding: 3px 11px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--background-modifier-border);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  white-space: nowrap;
+  line-height: 1.6;
+}
+
+.de-seg-btn:last-child {
+  border-right: none;
+}
+
+.de-seg-btn:hover:not(.is-active) {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+.de-seg-btn.is-active {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+/* ═══ Chunk list ═════════════════════════════════════════════════════ */
+.de-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 18px;
+  overflow-y: auto;
+  flex: 1;
+  /* min-height: 0 is critical — without it flex children won't overflow-scroll */
+  min-height: 0;
+}
+
+/* ═══ Chunk card ═════════════════════════════════════════════════════ */
+.de-card {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 7px;
+  overflow: hidden;
+  transition: border-color 0.18s;
+  /* Never let the flex parent shrink cards — they must stay at natural height */
+  flex-shrink: 0;
+}
+
+.de-card.is-copied {
+  border-color: var(--color-green);
+}
+
+/* card header row */
+.de-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: var(--background-secondary);
+  border-bottom: 1px solid var(--background-modifier-border);
+  gap: 8px;
+}
+
+.de-card-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.de-card-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* chunk number */
+.de-chunk-num {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* status badges */
+.de-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border-radius: 3px;
+  border: 1px solid;
+}
+
+.de-badge--safe {
+  color: var(--color-green);
+  border-color: var(--color-green);
+  background: color-mix(in srgb, var(--color-green) 10%, transparent);
+}
+
+.de-badge--warning {
+  color: var(--color-orange);
+  border-color: var(--color-orange);
+  background: color-mix(in srgb, var(--color-orange) 10%, transparent);
+}
+
+.de-badge--overflow {
+  color: var(--color-red);
+  border-color: var(--color-red);
+  background: color-mix(in srgb, var(--color-red) 10%, transparent);
+}
+
+/* char count */
+.de-char-count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* copy button */
+.de-copy-btn {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-primary);
+  color: var(--text-normal);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  white-space: nowrap;
+  line-height: 1.6;
+}
+
+.de-copy-btn:hover:not(.is-copied) {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  border-color: var(--interactive-accent);
+}
+
+.de-copy-btn.is-copied {
+  background: var(--color-green);
+  color: #fff;
+  border-color: var(--color-green);
+  cursor: default;
+}
+
+/* preview div — replaces textarea, no CSS quirks */
+.de-preview {
+  height: 160px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: var(--font-monospace);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  padding: 10px 12px;
+  background: var(--background-primary);
+  color: var(--text-normal);
+  box-sizing: border-box;
+  user-select: text;
+  cursor: text;
+}
+
+/* ═══ Footer ═════════════════════════════════════════════════════════ */
+.de-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 18px 11px;
+  border-top: 1px solid var(--background-modifier-border);
+  flex-shrink: 0;
+}
+
+.de-footer-chunks {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.de-footer-total {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+}
+
+/* ═══ Empty state ════════════════════════════════════════════════════ */
+.de-empty {
+  padding: 48px 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
