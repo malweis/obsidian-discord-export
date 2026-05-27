@@ -13,8 +13,8 @@ This plugin is made to automate that in a (what I hope is) simple way.
 When you trigger the command, a modal opens showing your note split into numbered chunks that fit within Discord's character limit. Each chunk has its own **Copy** button to paste the chunks needed into discord one by one.
 
 I use a lot of indentation in the things I write, but sometimes discord handles them weirdly, so the plugin has an indentation mode where it just straight up converts line jumps into indents that discord can handle.
-<!-- Add a screenshot of the modal here once the UI is finalized -->
-<!-- ![Discord Export modal](docs/screenshot-modal.png) -->
+
+![Discord Export modal — Indent mode](docs/darkMode.png)
 
 ---
 
@@ -26,6 +26,8 @@ I use a lot of indentation in the things I write, but sometimes discord handles 
 - **2000 / 4000 character limit** — toggle between standard and Nitro limits
 - **Ignore blocks** — wrap content in `{...}` to strip it from the output
 - **Breakpoints** — force a chunk split at any point with `+++`
+
+![Discord Export modal — Splitter mode](docs/lightMode.png)
 
 ---
 
