@@ -66,53 +66,47 @@ function cleanText(text: string): string {
  * breakpoints always open a new chunk with the correct first-para prefix.
  */
 function packSegment(segment: string, charLimit: number, mode: ExportMode): string[] {
-  const paragraphs = segment
-    .split(/\n\n+/)
-    .map((p) => p.trim())
-    .filter((p) => p.length > 0);
+  const lines = segment.split("\n");
 
   const chunks: string[] = [];
   let currentLines: string[] = [];
   let currentLength = 0;
   let isFirstInChunk = true;
 
-  for (const para of paragraphs) {
-    // Pre-compute indented form to measure size before deciding whether to flush
-    const indentedPara = mode === "indent"
-      ? para
-          .split("\n")
-          .map((line, i) => (i === 0 && isFirstInChunk ? FIRST_PARA_PREFIX : OTHER_PARA_PREFIX) + line)
-          .join("\n")
-      : para;
+  function applyPrefix(raw: string): string {
+    if (mode !== "indent" || raw.trim().length === 0) return raw;
+    return (isFirstInChunk ? FIRST_PARA_PREFIX : OTHER_PARA_PREFIX) + raw;
+  }
 
-    const separator = currentLines.length > 0 ? 2 : 0;
-    const addedLength = indentedPara.length + separator;
+  function flush() {
+    // Trim trailing blank lines before saving the chunk
+    let end = currentLines.length;
+    while (end > 0 && currentLines[end - 1].trim() === "") end--;
+    if (end > 0) chunks.push(currentLines.slice(0, end).join("\n"));
+    currentLines = [];
+    currentLength = 0;
+    isFirstInChunk = true;
+  }
 
-    if (currentLines.length > 0 && currentLength + addedLength > charLimit) {
-      // Flush current chunk and start a new one
-      chunks.push(currentLines.join("\n\n"));
-      currentLines = [];
-      currentLength = 0;
-      isFirstInChunk = true;
+  for (const raw of lines) {
+    const isBlank = raw.trim().length === 0;
+    const candidate = applyPrefix(raw);
+    const sep = currentLines.length > 0 ? 1 : 0;
+
+    // Only flush at non-blank lines — never cut in the middle of blank space
+    if (!isBlank && currentLines.length > 0 && currentLength + candidate.length + sep > charLimit) {
+      flush();
     }
 
-    // Re-compute after potential flush (isFirstInChunk may have changed)
-    const finalPara = mode === "indent"
-      ? para
-          .split("\n")
-          .map((line, i) => (i === 0 && isFirstInChunk ? FIRST_PARA_PREFIX : OTHER_PARA_PREFIX) + line)
-          .join("\n")
-      : para;
-
-    const sep = currentLines.length > 0 ? 2 : 0;
-    currentLines.push(finalPara);
-    currentLength += finalPara.length + sep;
-    isFirstInChunk = false;
+    // Re-apply prefix after potential flush (isFirstInChunk may have changed)
+    const final = applyPrefix(raw);
+    const s = currentLines.length > 0 ? 1 : 0;
+    currentLines.push(final);
+    currentLength += final.length + s;
+    if (!isBlank) isFirstInChunk = false;
   }
 
-  if (currentLines.length > 0) {
-    chunks.push(currentLines.join("\n\n"));
-  }
+  flush();
 
   return chunks;
 }
@@ -128,7 +122,7 @@ function packSegment(segment: string, charLimit: number, mode: ExportMode): stri
  *             (must be on its own line)
  */
 export function processNote(rawText: string, charLimit: number, mode: ExportMode): string[] {
-  const text = cleanText(rawText);
+  const text = cleanText(rawText.replace(/\r\n/g, "\n"));
 
   // Split on +++ breakpoints (standalone line, optional surrounding whitespace)
   const segments = text
