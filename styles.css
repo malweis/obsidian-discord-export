@@ -1,14 +1,14 @@
 /* ═══ Modal shell ════════════════════════════════════════════════════ */
-.de-modal {
-  width: min(860px, 92vw) !important;
-  max-width: min(860px, 92vw) !important;
+.modal.de-modal {
+  width: min(860px, 92vw);
+  max-width: min(860px, 92vw);
 }
 
-.de-modal .modal-content {
-  padding: 0 !important;
-  overflow: hidden !important;
-  display: flex !important;
-  flex-direction: column !important;
+.modal.de-modal .modal-content {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   /* Let the content drive height, but cap it so the modal doesn't overflow the screen */
   max-height: 82vh;
 }
