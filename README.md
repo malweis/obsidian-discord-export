@@ -2,16 +2,17 @@
 
 An Obsidian plugin that prepares your notes for posting on Discord.
 
-This started as a personal tool — I write a lot in Obsidian and regularly share that text on Discord. Manually splitting long notes to fit Discord's message limits and then fixing the formatting every time got old fast. This plugin automates all of that.
+This is mainly a personal tool. I write a lot in Obsidian and regularly share that text on Discord. Manually splitting long notes to fit Discord's message limits and in some cases, formatting oddities, got kinda annoying the moment I start doing it with long text. 
+This plugin is made to automate that in a (what I hope is) simple way.
+
 
 ---
 
 ## What it does
 
-When you trigger the command, a modal opens showing your note split into numbered chunks that fit within Discord's character limit. Each chunk has its own **Copy** button. Paste them into Discord one by one.
+When you trigger the command, a modal opens showing your note split into numbered chunks that fit within Discord's character limit. Each chunk has its own **Copy** button to paste the chunks needed into discord one by one.
 
-The plugin also handles indentation: Discord doesn't preserve the visual formatting of your editor, so the first paragraph of each message gets a special prefix that renders as an indent on Discord, and all following paragraphs get standard spacing.
-
+I use a lot of indentation in the things I write, but sometimes discord handles them weirdly, so the plugin has an indentation mode where it just straight up converts line jumps into indents that discord can handle.
 <!-- Add a screenshot of the modal here once the UI is finalized -->
 <!-- ![Discord Export modal](docs/screenshot-modal.png) -->
 
@@ -19,12 +20,10 @@ The plugin also handles indentation: Discord doesn't preserve the visual formatt
 
 ## Features
 
-- **Automatic splitting** — chunks your note at paragraph boundaries, never mid-sentence
+- **Automatic splitting** — chunks your note at paragraph boundaries
 - **Indent mode** — adds Discord-compatible indentation to every paragraph (see below)
 - **Splitter mode** — splits only, no indentation added
 - **2000 / 4000 character limit** — toggle between standard and Nitro limits
-- **Per-session overrides** — change mode and limit inside the modal without touching your settings
-- **Copied state** — each chunk tracks whether you've already copied it
 - **Ignore blocks** — wrap content in `{...}` to strip it from the output
 - **Breakpoints** — force a chunk split at any point with `+++`
 
@@ -42,7 +41,7 @@ The modal will show all chunks ready to copy.
 
 ### Ignore blocks `{...}`
 
-Wrap anything in curly braces and it will be stripped from the output entirely. Useful for personal notes, image reminders, or anything else you want visible in Obsidian but not on Discord.
+Wrap anything in curly braces and it will be stripped from the output entirely.
 
 ```
 He looked serious, his eyes fixed on the horizon.
@@ -50,7 +49,7 @@ He looked serious, his eyes fixed on the horizon.
 —We leave at dawn. —he said, turning away.
 ```
 
-Output (what Discord sees):
+Output:
 ```
 He looked serious, his eyes fixed on the horizon.
 —We leave at dawn. —he said, turning away.
@@ -69,7 +68,7 @@ By morning, nothing remained.
 
 ### Breakpoints `+++`
 
-Place `+++` on its own line to force a new chunk at that exact point, regardless of how full the current chunk is. This is useful when you want to post an image between two chunks — the breakpoint guarantees the image has its own slot.
+Place `+++` on its own line to force a new chunk at that exact point, regardless of how full the current chunk is.
 
 ```
 He looked serious, his eyes fixed on the horizon.
