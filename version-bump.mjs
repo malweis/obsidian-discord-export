@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from "fs";
 
-const targetVersion = process.env.npm_package_version;
+const { version: targetVersion } = JSON.parse(readFileSync("package.json", "utf8"));
 
 // Bump version in manifest.json
 const manifest = JSON.parse(readFileSync("manifest.json", "utf8"));
