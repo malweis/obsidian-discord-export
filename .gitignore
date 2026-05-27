@@ -1,6 +1,5 @@
 node_modules/
 main.js
 *.js.map
-.npmrc
 .claude/
 CLAUDE.md
