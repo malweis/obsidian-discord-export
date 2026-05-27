@@ -5,7 +5,6 @@ An Obsidian plugin that prepares your notes for posting on Discord.
 This is mainly a personal tool. I write a lot in Obsidian and regularly share that text on Discord. Manually splitting long notes to fit Discord's message limits and in some cases, formatting oddities, got kinda annoying the moment I start doing it with long text. 
 This plugin is made to automate that in a (what I hope is) simple way.
 
-
 ---
 
 ## What it does
@@ -21,7 +20,7 @@ I use a lot of indentation in the things I write, but sometimes discord handles 
 ## Features
 
 - **Automatic splitting** — chunks your note at paragraph boundaries
-- **Indent mode** — adds Discord-compatible indentation to every paragraph (see below)
+- **Indent mode** — adds Discord-compatible indentation to every paragraph
 - **Splitter mode** — splits only, no indentation added
 - **2000 / 4000 character limit** — toggle between standard and Nitro limits
 - **Ignore blocks** — wrap content in `{...}` to strip it from the output
@@ -87,12 +86,34 @@ This produces two chunks: everything before the `+++` and everything after, this
 
 ## Settings
 
-| Setting | Options | Default |
-|---------|---------|---------|
-| Character limit | 2000 / 4000 (Nitro) | 2000 |
-| Default mode | Indent / Splitter | Indent |
+Open **Settings → Community plugins → Discord Export**.
+
+| Setting | Description | Options | Default |
+|---------|-------------|---------|---------|
+| Character limit | Maximum characters per chunk. Use 4000 if you have Discord Nitro. | 2000 / 4000 | 2000 |
+| Default mode | Whether to add indentation or just split the text. | Indent / Splitter | Indent |
 
 Both settings can also be overridden per session directly inside the modal.
+
+---
+
+## Privacy
+
+Discord Export does not make any network requests. All processing happens locally inside Obsidian. No note content or data is sent anywhere.
+
+---
+
+## Development
+
+This project uses [pnpm](https://pnpm.io) instead of npm. Given the recent supply chain vulnerabilities in the npm ecosystem, pnpm just felt like a safer default
+
+```bash
+pnpm install
+pnpm dev      # watch mode — rebuilds on save
+pnpm build    # production build
+```
+
+Compiled output goes to `main.js` at the repo root. To test locally, copy `main.js`, `manifest.json`, and `styles.css` into your vault's `.obsidian/plugins/discord-export/` folder and reload Obsidian.
 
 ---
 
