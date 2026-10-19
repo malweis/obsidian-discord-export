@@ -92,8 +92,9 @@ Open **Settings → Community plugins → Discord Export**.
 |---------|-------------|---------|---------|
 | Character limit | Maximum characters per chunk. Use 4000 if you have Discord Nitro. | 2000 / 4000 | 2000 |
 | Default mode | Whether to add indentation or just split the text. | Indent / Splitter | Indent |
+| Indent Markdown lines | In Indent mode, also indent headings, lists and quotes. Off keeps them rendering as Markdown on Discord. | On / Off | Off |
 
-Both settings can also be overridden per session directly inside the modal.
+Character limit and mode can also be overridden per session directly inside the modal.
 
 ---
 

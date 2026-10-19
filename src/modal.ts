@@ -1,4 +1,4 @@
-import { App, Modal } from "obsidian";
+import { App, Modal, Notice } from "obsidian";
 import { processNote } from "./processor";
 import type { DiscordExportSettings, ExportMode } from "./settings";
 
@@ -46,7 +46,11 @@ export class DiscordExportModal extends Modal {
         text: label,
         cls: "de-seg-btn" + (this.currentMode === val ? " is-active" : ""),
       });
-      btn.addEventListener("click", () => { this.currentMode = val; this.render(); });
+      btn.addEventListener("click", () => {
+        this.currentMode = val;
+        this.copiedChunks.clear(); // chunk contents change, so old "copied" marks no longer apply
+        this.render();
+      });
     }
 
     // Limit segmented control
@@ -58,11 +62,17 @@ export class DiscordExportModal extends Modal {
         text: label,
         cls: "de-seg-btn" + (this.currentLimit === val ? " is-active" : ""),
       });
-      btn.addEventListener("click", () => { this.currentLimit = val as 2000 | 4000; this.render(); });
+      btn.addEventListener("click", () => {
+        this.currentLimit = val as 2000 | 4000;
+        this.copiedChunks.clear(); // chunk contents change, so old "copied" marks no longer apply
+        this.render();
+      });
     }
 
     // ── Process ───────────────────────────────────────────────────────────
-    const chunks = processNote(this.rawText, this.currentLimit, this.currentMode);
+    const chunks = processNote(this.rawText, this.currentLimit, this.currentMode, {
+      indentMarkdown: this.settings.indentMarkdown,
+    });
 
     if (chunks.length === 0) {
       const empty = contentEl.createDiv({ cls: "de-empty" });
@@ -101,7 +111,13 @@ export class DiscordExportModal extends Modal {
       if (alreadyCopied) copyBtn.addClass("is-copied");
 
       copyBtn.addEventListener("click", async () => {
-        await navigator.clipboard.writeText(chunk);
+        try {
+          await navigator.clipboard.writeText(chunk);
+        } catch (e) {
+          console.error("[discord-export] Clipboard write failed:", e);
+          new Notice(`Couldn't copy chunk ${index + 1} to the clipboard.`);
+          return;
+        }
         this.copiedChunks.add(index);
         card.addClass("is-copied");
         copyBtn.addClass("is-copied");

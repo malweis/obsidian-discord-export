@@ -3,3 +3,4 @@ main.js
 *.js.map
 .claude/
 CLAUDE.md
+.test-build/

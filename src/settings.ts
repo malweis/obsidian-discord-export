@@ -6,11 +6,13 @@ export type ExportMode = "indent" | "splitter";
 export interface DiscordExportSettings {
   charLimit: 2000 | 4000;
   defaultMode: ExportMode;
+  indentMarkdown: boolean;
 }
 
 export const DEFAULT_SETTINGS: DiscordExportSettings = {
   charLimit: 2000,
   defaultMode: "indent",
+  indentMarkdown: false,
 };
 
 export class DiscordExportSettingTab extends PluginSettingTab {
@@ -51,6 +53,20 @@ export class DiscordExportSettingTab extends PluginSettingTab {
           .setValue(this.plugin.settings.defaultMode)
           .onChange(async (value) => {
             this.plugin.settings.defaultMode = value as ExportMode;
+            await this.plugin.saveSettings();
+          })
+      );
+
+    new Setting(containerEl)
+      .setName("Indent Markdown lines")
+      .setDesc(
+        "In Indent mode, also indent headings (#), lists (-, 1.) and quotes (>). Off by default, since indenting them stops Discord from rendering them."
+      )
+      .addToggle((toggle) =>
+        toggle
+          .setValue(this.plugin.settings.indentMarkdown)
+          .onChange(async (value) => {
+            this.plugin.settings.indentMarkdown = value;
             await this.plugin.saveSettings();
           })
       );
