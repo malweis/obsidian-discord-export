@@ -13,7 +13,7 @@ export default class DiscordExportPlugin extends Plugin {
     await this.loadSettings();
 
     this.addCommand({
-      id: "open-discord-export",
+      id: "export-note",
       name: "Export note to Discord",
       editorCallback: (editor: Editor, view: MarkdownView) => {
         this.openExport(editor.getValue(), "note");
@@ -23,7 +23,7 @@ export default class DiscordExportPlugin extends Plugin {
     // Always available (rather than hidden without a selection) so running it
     // from a hotkey with nothing selected can explain itself instead of doing nothing.
     this.addCommand({
-      id: "open-discord-export-selection",
+      id: "export-selection",
       name: "Export selection to Discord",
       editorCallback: (editor: Editor) => {
         const selection = editor.getSelection();
@@ -58,7 +58,8 @@ export default class DiscordExportPlugin extends Plugin {
   onunload() {}
 
   async loadSettings() {
-    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+    const saved = (await this.loadData()) as Partial<DiscordExportSettings> | null;
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, saved);
   }
 
   async saveSettings() {

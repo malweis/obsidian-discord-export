@@ -119,9 +119,16 @@ This project uses [pnpm](https://pnpm.io) instead of npm. Given the recent suppl
 pnpm install
 pnpm dev      # watch mode — rebuilds on save
 pnpm build    # production build
+pnpm test     # processor tests
 ```
 
 Compiled output goes to `main.js` at the repo root. To test locally, copy `main.js`, `manifest.json`, and `styles.css` into your vault's `.obsidian/plugins/discord-export/` folder and reload Obsidian.
+
+If you want `pnpm dev` to build straight into a test vault, create a `.env` file at the repo root (it's gitignored) pointing at the plugin folder:
+
+```
+DEV_PLUGIN_DIR=C:/path/to/test-vault/.obsidian/plugins/discord-export
+```
 
 ---
 

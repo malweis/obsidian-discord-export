@@ -38,7 +38,7 @@ export class DiscordExportModal extends Modal {
 
     // ── Header ────────────────────────────────────────────────────────────
     const header = contentEl.createDiv({ cls: "de-header" });
-    header.createEl("span", {
+    header.createSpan({
       text: this.source === "selection" ? "Discord Export · Selection" : "Discord Export",
       cls: "de-title",
     });
@@ -47,7 +47,7 @@ export class DiscordExportModal extends Modal {
 
     // Mode segmented control
     const modeGroup = controls.createDiv({ cls: "de-seg-group" });
-    modeGroup.createEl("span", { text: "Mode", cls: "de-seg-label" });
+    modeGroup.createSpan({ text: "Mode", cls: "de-seg-label" });
     const modeBtns = modeGroup.createDiv({ cls: "de-seg-btns" });
     for (const [val, label] of [["indent", "Indent"], ["splitter", "Splitter"]] as const) {
       const btn = modeBtns.createEl("button", {
@@ -63,7 +63,7 @@ export class DiscordExportModal extends Modal {
 
     // Limit segmented control
     const limitGroup = controls.createDiv({ cls: "de-seg-group" });
-    limitGroup.createEl("span", { text: "Limit", cls: "de-seg-label" });
+    limitGroup.createSpan({ text: "Limit", cls: "de-seg-label" });
     const limitBtns = limitGroup.createDiv({ cls: "de-seg-btns" });
     for (const [val, label] of [[2000, "2 000"], [4000, "4 000"]] as [number, string][]) {
       const btn = limitBtns.createEl("button", {
@@ -84,7 +84,7 @@ export class DiscordExportModal extends Modal {
 
     if (chunks.length === 0) {
       const empty = contentEl.createDiv({ cls: "de-empty" });
-      empty.createEl("span", { text: `Nothing to export — the ${this.source} appears to be empty.` });
+      empty.createSpan({ text: `Nothing to export — the ${this.source} appears to be empty.` });
       return;
     }
 
@@ -104,32 +104,33 @@ export class DiscordExportModal extends Modal {
       const cardHead = card.createDiv({ cls: "de-card-head" });
 
       const left = cardHead.createDiv({ cls: "de-card-left" });
-      left.createEl("span", { text: String(index + 1).padStart(2, "0"), cls: "de-chunk-num" });
-      left.createEl("span", { text: statusLabel, cls: `de-badge de-badge--${status}` });
+      left.createSpan({ text: String(index + 1).padStart(2, "0"), cls: "de-chunk-num" });
+      left.createSpan({ text: statusLabel, cls: `de-badge de-badge--${status}` });
 
       const right = cardHead.createDiv({ cls: "de-card-right" });
-      right.createEl("span", {
+      right.createSpan({
         text: `${chunk.length.toLocaleString()} / ${this.currentLimit.toLocaleString()}`,
         cls: "de-char-count",
       });
 
       const copyBtn = right.createEl("button", { cls: "de-copy-btn" });
       const alreadyCopied = this.copiedChunks.has(index);
-      copyBtn.setText(alreadyCopied ? "✓ Copied" : "Copy");
+      copyBtn.setText(alreadyCopied ? "Copied" : "Copy"); // ✓ is added by CSS on .is-copied
       if (alreadyCopied) copyBtn.addClass("is-copied");
 
-      copyBtn.addEventListener("click", async () => {
-        try {
-          await navigator.clipboard.writeText(chunk);
-        } catch (e) {
-          console.error("[discord-export] Clipboard write failed:", e);
-          new Notice(`Couldn't copy chunk ${index + 1} to the clipboard.`);
-          return;
-        }
-        this.copiedChunks.add(index);
-        card.addClass("is-copied");
-        copyBtn.addClass("is-copied");
-        copyBtn.setText("✓ Copied");
+      copyBtn.addEventListener("click", () => {
+        void navigator.clipboard.writeText(chunk).then(
+          () => {
+            this.copiedChunks.add(index);
+            card.addClass("is-copied");
+            copyBtn.addClass("is-copied");
+            copyBtn.setText("Copied");
+          },
+          (e: unknown) => {
+            console.error("[discord-export] Clipboard write failed:", e);
+            new Notice(`Couldn't copy chunk ${index + 1} to the clipboard.`);
+          }
+        );
       });
 
       // Preview div — plain div avoids all textarea CSS quirks
@@ -139,11 +140,11 @@ export class DiscordExportModal extends Modal {
 
     // ── Footer ────────────────────────────────────────────────────────────
     const footer = contentEl.createDiv({ cls: "de-footer" });
-    footer.createEl("span", {
+    footer.createSpan({
       text: `${chunks.length} chunk${chunks.length !== 1 ? "s" : ""}`,
       cls: "de-footer-chunks",
     });
-    footer.createEl("span", {
+    footer.createSpan({
       text: `${this.rawText.length.toLocaleString()} chars in ${this.source}`,
       cls: "de-footer-total",
     });

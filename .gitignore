@@ -4,3 +4,4 @@ main.js
 .claude/
 CLAUDE.md
 .test-build/
+.env

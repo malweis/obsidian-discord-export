@@ -215,6 +215,10 @@
   cursor: default;
 }
 
+.de-copy-btn.is-copied::before {
+  content: "✓ ";
+}
+
 /* preview div — replaces textarea, no CSS quirks */
 .de-preview {
   height: 160px;

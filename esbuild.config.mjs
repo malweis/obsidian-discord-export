@@ -11,10 +11,13 @@ If you want to view the source, please visit the github repository of this plugi
 
 const prod = process.argv[2] === "production";
 
-// Output path: test vault during dev, current dir for production release
-const outDir = prod
-  ? "."
-  : "C:/Users/Federico/Desktop/proyectos/personales/obsidian-test-vault/.obsidian/plugins/discord-export";
+// Dev builds go to the test vault's plugin folder, set as DEV_PLUGIN_DIR in a
+// local (gitignored) .env file: DEV_PLUGIN_DIR=<test vault>/<config folder>/plugins/discord-export
+// Production builds go to the repo root for the release workflow.
+if (fs.existsSync(".env")) process.loadEnvFile(".env");
+const devDir = process.env.DEV_PLUGIN_DIR;
+if (!prod && !devDir) console.warn("[dev] DEV_PLUGIN_DIR is not set in .env, building to the repo root");
+const outDir = prod ? "." : devDir ?? ".";
 
 // Plugin that copies styles.css to the output directory after every build
 const copyStylesPlugin = {
