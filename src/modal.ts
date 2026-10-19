@@ -2,16 +2,21 @@ import { App, Modal, Notice } from "obsidian";
 import { processNote } from "./processor";
 import type { DiscordExportSettings, ExportMode } from "./settings";
 
+/** What the modal is exporting: the whole note or just the editor selection. */
+export type ExportSource = "note" | "selection";
+
 export class DiscordExportModal extends Modal {
   private rawText: string;
+  private source: ExportSource;
   private settings: DiscordExportSettings;
   private currentMode: ExportMode;
   private currentLimit: 2000 | 4000;
   private copiedChunks: Set<number> = new Set();
 
-  constructor(app: App, rawText: string, settings: DiscordExportSettings) {
+  constructor(app: App, rawText: string, settings: DiscordExportSettings, source: ExportSource = "note") {
     super(app);
     this.rawText = rawText;
+    this.source = source;
     this.settings = settings;
     this.currentMode = settings.defaultMode;
     this.currentLimit = settings.charLimit;
@@ -33,7 +38,10 @@ export class DiscordExportModal extends Modal {
 
     // ── Header ────────────────────────────────────────────────────────────
     const header = contentEl.createDiv({ cls: "de-header" });
-    header.createEl("span", { text: "Discord Export", cls: "de-title" });
+    header.createEl("span", {
+      text: this.source === "selection" ? "Discord Export · Selection" : "Discord Export",
+      cls: "de-title",
+    });
 
     const controls = header.createDiv({ cls: "de-controls" });
 
@@ -76,7 +84,7 @@ export class DiscordExportModal extends Modal {
 
     if (chunks.length === 0) {
       const empty = contentEl.createDiv({ cls: "de-empty" });
-      empty.createEl("span", { text: "Nothing to export — the note appears to be empty." });
+      empty.createEl("span", { text: `Nothing to export — the ${this.source} appears to be empty.` });
       return;
     }
 
@@ -136,7 +144,7 @@ export class DiscordExportModal extends Modal {
       cls: "de-footer-chunks",
     });
     footer.createEl("span", {
-      text: `${this.rawText.length.toLocaleString()} chars in note`,
+      text: `${this.rawText.length.toLocaleString()} chars in ${this.source}`,
       cls: "de-footer-total",
     });
   }

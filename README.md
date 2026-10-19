@@ -20,6 +20,7 @@ I use a lot of indentation in the things I write, but sometimes discord handles 
 ## Features
 
 - **Automatic splitting** — chunks your note at paragraph boundaries
+- **Export selection** — export just the highlighted text instead of the whole note
 - **Indent mode** — adds Discord-compatible indentation to every paragraph
 - **Splitter mode** — splits only, no indentation added
 - **2000 / 4000 character limit** — toggle between standard and Nitro limits
@@ -35,6 +36,12 @@ I use a lot of indentation in the things I write, but sometimes discord handles 
 Open the note you want to export, then run **Discord Export: Export note to Discord** from the command palette (`Ctrl+P`). You can assign a hotkey in **Settings → Hotkeys**.
 
 The modal will show all chunks ready to copy.
+
+### Exporting a selection
+
+If you only want to share a snippet, highlight it and either run **Discord Export: Export selection to Discord** from the command palette or right-click the selection and pick **Export selection to Discord**. The modal works the same, just with the selected text (the header will say **Selection** so you know which one you're looking at).
+
+If you run it with nothing selected you'll get a small notice instead of the modal.
 
 ---
 
