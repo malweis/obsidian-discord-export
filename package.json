@@ -1,6 +1,6 @@
 {
   "name": "discord-export",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Obsidian plugin to export notes to Discord-ready formatted chunks",
   "main": "main.js",
   "scripts": {
