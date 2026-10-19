@@ -120,7 +120,10 @@ pnpm install
 pnpm dev      # watch mode — rebuilds on save
 pnpm build    # production build
 pnpm test     # processor tests
+pnpm release patch   # bump version (patch / minor / major), commit and tag
 ```
+
+`pnpm release` updates `package.json`, `manifest.json` and `versions.json`, commits and tags the new version but doesn't push. Pushing the tag is what triggers the GitHub release.
 
 Compiled output goes to `main.js` at the repo root. To test locally, copy `main.js`, `manifest.json`, and `styles.css` into your vault's `.obsidian/plugins/discord-export/` folder and reload Obsidian.
 
