@@ -44,6 +44,7 @@ jobs:
       - name: Upload release assets
         uses: softprops/action-gh-release@v2
         with:
+          body_path: release-notes/${{ github.ref_name }}.md
           generate_release_notes: true
           files: |
             main.js

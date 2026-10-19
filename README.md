@@ -125,6 +125,8 @@ pnpm release patch   # bump version (patch / minor / major), commit and tag
 
 `pnpm release` updates `package.json`, `manifest.json` and `versions.json`, commits and tags the new version but doesn't push. Pushing the tag is what triggers the GitHub release.
 
+Before releasing, write the update notes in `release-notes/<version>.md` and commit them. That file becomes the description of the GitHub release, and `pnpm release` won't run without it.
+
 Compiled output goes to `main.js` at the repo root. To test locally, copy `main.js`, `manifest.json`, and `styles.css` into your vault's `.obsidian/plugins/discord-export/` folder and reload Obsidian.
 
 If you want `pnpm dev` to build straight into a test vault, create a `.env` file at the repo root (it's gitignored) pointing at the plugin folder:

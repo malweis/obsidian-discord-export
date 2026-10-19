@@ -5,10 +5,11 @@
 // Updates package.json, manifest.json and versions.json (keeping each file's
 // formatting), then creates a "<version>" commit and a "<version>" tag (no "v",
 // which is what the release workflow and Obsidian expect). Nothing is pushed.
+// Requires release-notes/<version>.md to exist, it becomes the release description.
 //
 // This replaces `pnpm version`, which (as of pnpm 11) skips the "version"
 // lifecycle script and ignores .npmrc's tag-version-prefix.
-import { readFileSync, writeFileSync } from "fs";
+import { existsSync, readFileSync, writeFileSync } from "fs";
 import { execFileSync } from "child_process";
 
 const git = (...args) => execFileSync("git", args, { encoding: "utf8" }).trim();
@@ -48,6 +49,10 @@ const versions = readJson("versions.json");
 
 const version = nextVersion(pkg.data.version, process.argv[2]);
 if (git("tag", "--list", version) !== "") fail(`tag ${version} already exists`);
+
+// The release workflow uses this file as the GitHub release description
+const notes = `release-notes/${version}.md`;
+if (!existsSync(notes)) fail(`${notes} is missing, write the release notes for ${version} and commit them first`);
 
 // ── Bump ─────────────────────────────────────────────────────────────────────
 
